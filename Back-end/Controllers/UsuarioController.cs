@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Back_end.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace Back_end.Controllers {
 
     //GET: api/usuario
     [ApiController]
+    [Authorize]
     public class UsuarioController : ControllerBase {
 
         GufosContext _contexto = new GufosContext ();
