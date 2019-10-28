@@ -45,8 +45,8 @@ using Newtonsoft.Json;
 // JWT - JSON WEB TOKEN
 
 // Adicionamos o pacote JWT
-// dotnet add package Microsoft.AspNetCore.Authentication.JwtBaerer --version 3.0.0
 // dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 3.0.0
+
 namespace Back_end {
     public class Startup {
         public Startup (IConfiguration configuration) {
