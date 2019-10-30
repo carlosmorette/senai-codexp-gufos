@@ -1,77 +1,68 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Back_end.Models;
+using GUFOS_BackEnd.Domains;
+using GUFOS_BackEnd.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Back_end.Controllers {
-
+namespace GUFOS_BackEnd.Controllers {
     [Route ("api/[controller]")]
-
-    //GET: api/TipoUsuario
     [ApiController]
     public class TipoUsuarioController : ControllerBase {
+        // GufosContext _context = new GufosContext();
 
-        GufosContext _contexto = new GufosContext ();
+        TipoUsuarioRepository _repositorio = new TipoUsuarioRepository ();
 
+        // GET: api/TipoUsuario/
         [HttpGet]
         public async Task<ActionResult<List<TipoUsuario>>> Get () {
+            var tipoUsuarios = await _repositorio.Listar ();
 
-            var tipousuario = await _contexto.TipoUsuario.ToListAsync ();
-
-            if (tipousuario == null) {
+            if (tipoUsuarios == null) {
                 return NotFound ();
             }
 
-            return tipousuario;
+            return tipoUsuarios;
         }
 
-        // GET: api/tipousuario/2
+        // GET: api/TipoUsuario/5
         [HttpGet ("{id}")]
-        public async Task<ActionResult<List<TipoUsuario>>> Get (int id) {
+        public async Task<ActionResult<TipoUsuario>> Get (int id) {
+            var tipoUsuario = await _repositorio.BuscarPorID (id);
 
-            var tipousuario = await _contexto.TipoUsuario.Include ("Usuario").ToListAsync ();
-
-            if (tipousuario == null) {
+            if (tipoUsuario == null) {
                 return NotFound ();
             }
 
-            return tipousuario;
-        }
-
-        // Não colocamos ID porque ja faz auto-incremento (IDENTITY)
-        //POST: api/tipousuario
-        [HttpPost]
-        public async Task<ActionResult<TipoUsuario>> Post (TipoUsuario tipoUsuario) {
-
-            try {
-                await _contexto.AddAsync (tipoUsuario);
-
-                await _contexto.SaveChangesAsync ();
-            } catch (DbUpdateConcurrencyException) {
-                throw;
-            }
             return tipoUsuario;
         }
 
-        // Referenciamos o ID para mostrar onde iremos fazer a alteração
-        //PUT: api/tipousuario
-        [HttpPut ("{id}")]
-        public async Task<ActionResult> Put (int id, TipoUsuario tipoUsuario) {
+        // POST: api/TipoUsuario/
+        [HttpPost]
+        public async Task<ActionResult<TipoUsuario>> Post (TipoUsuario tipoUsuario) {
+            try {
+                await _repositorio.Salvar (tipoUsuario);
+            } catch (DbUpdateConcurrencyException) {
+                throw;
+            }
 
+            return tipoUsuario;
+        }
+
+        // PUT: api/TipoUsuario/5
+        [HttpPut ("{id}")]
+        public async Task<IActionResult> Put (int id, TipoUsuario tipoUsuario) {
             if (id != tipoUsuario.TipoUsuarioId) {
                 return BadRequest ();
             }
 
-            _contexto.Entry (tipoUsuario).State = EntityState.Modified;
-
             try {
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Alterar (tipoUsuario);
+
             } catch (DbUpdateConcurrencyException) {
+                var tipoUsuario_valido = await _repositorio.BuscarPorID (id);
 
-                var tipousuario_valido = await _contexto.TipoUsuario.FindAsync (id);
-
-                if (tipoUsuario == null) {
+                if (tipoUsuario_valido == null) {
                     return NotFound ();
                 } else {
                     throw;
@@ -81,21 +72,17 @@ namespace Back_end.Controllers {
             return NoContent ();
         }
 
-        //DELETE: api/tipousuario/id
+        // DELETE: api/TipoUsuario/5
         [HttpDelete ("{id}")]
         public async Task<ActionResult<TipoUsuario>> Delete (int id) {
-
-            var tipoUsuario = await _contexto.TipoUsuario.FindAsync (id);
-
+            var tipoUsuario = await _repositorio.BuscarPorID(id);
             if (tipoUsuario == null) {
                 return NotFound ();
             }
 
-            _contexto.TipoUsuario.Remove (tipoUsuario);
-            await _contexto.SaveChangesAsync ();
 
             return tipoUsuario;
-
         }
+
     }
 }

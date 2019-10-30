@@ -1,77 +1,69 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Back_end.Models;
+using GUFOS_BackEnd.Domains;
+using GUFOS_BackEnd.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Back_end.Controllers {
-
+namespace GUFOS_BackEnd.Controllers {
     [Route ("api/[controller]")]
-
-    //GET: api/usuario
     [ApiController]
-    [Authorize]
     public class UsuarioController : ControllerBase {
+        // GufosContext _context = new GufosContext();
 
-        GufosContext _contexto = new GufosContext ();
+        UsuarioRepository _repositorio = new UsuarioRepository ();
 
+        // GET: api/Usuario/
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Usuario>>> Get () {
+            var usuarios = await _repositorio.Listar ();
 
-            var usuario = await _contexto.Usuario.Include (t => t.TipoUsuario).ToListAsync ();
-
-            if (usuario == null) {
+            if (usuarios == null) {
                 return NotFound ();
             }
-
-            return usuario;
+            return usuarios;
         }
 
-        // GET: api/usuario/2
+        // GET: api/Usuario/5
         [HttpGet ("{id}")]
+        [Authorize]
         public async Task<ActionResult<Usuario>> Get (int id) {
-            var usuario = await _contexto.Usuario.Include (t => t.TipoUsuario).FirstOrDefaultAsync (e => e.UsuarioId == id);
+            var usuario = await _repositorio.BuscarPorID (id);
 
             if (usuario == null) {
                 return NotFound ();
             }
-
             return usuario;
         }
-        // Não colocamos ID porque ja faz auto-incremento (IDENTITY)
-        //POST: api/usuario
+
+        // POST: api/Usuario/
         [HttpPost]
-        public async Task<ActionResult<Usuario>> Post (Usuario Usuario) {
-
+        [Authorize]
+        public async Task<ActionResult<Usuario>> Post (Usuario usuario) {
             try {
-                await _contexto.AddAsync (Usuario);
-
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Salvar (usuario);
             } catch (DbUpdateConcurrencyException) {
                 throw;
             }
-            return Usuario;
+            return usuario;
         }
 
-        // Referenciamos o ID para mostrar onde iremos fazer a alteração
-        //PUT: api/usuario
+        // PUT: api/Usuario/5
         [HttpPut ("{id}")]
-        public async Task<ActionResult> Put (int id, Usuario Usuario) {
-
-            if (id != Usuario.UsuarioId) {
+        [Authorize]
+        public async Task<IActionResult> Put (int id, Usuario usuario) {
+            if (id != usuario.UsuarioId) {
                 return BadRequest ();
             }
 
-            _contexto.Entry (Usuario).State = EntityState.Modified;
-
             try {
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Alterar (usuario);
             } catch (DbUpdateConcurrencyException) {
+                var usuario_valido = await _repositorio.BuscarPorID (id);
 
-                var usuario_valido = await _contexto.Usuario.FindAsync (id);
-
-                if (Usuario == null) {
+                if (usuario_valido == null) {
                     return NotFound ();
                 } else {
                     throw;
@@ -81,21 +73,17 @@ namespace Back_end.Controllers {
             return NoContent ();
         }
 
-        //DELETE: api/usuario/id
+        // DELETE: api/Usuario/5
         [HttpDelete ("{id}")]
+        [Authorize]
         public async Task<ActionResult<Usuario>> Delete (int id) {
-
-            var Usuario = await _contexto.Usuario.FindAsync (id);
-
-            if (Usuario == null) {
+            var usuario = await _repositorio.BuscarPorID (id);
+            if (usuario == null) {
                 return NotFound ();
             }
 
-            _contexto.Usuario.Remove (Usuario);
-            await _contexto.SaveChangesAsync ();
-
-            return Usuario;
-
+            return usuario;
         }
+
     }
 }

@@ -3,53 +3,43 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Back_end.Models;
+using GUFOS_BackEnd.Domains;
+using GUFOS_BackEnd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Back_end.Controllers {
-
-    [Route("api/[controller]")]
+namespace GUFOS_BackEnd.Controllers {
+    [Route ("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase {
 
-        // Chamamos nosso contexto da base de dados
+        // Chamamos nosso contexto do banco
         GufosContext _context = new GufosContext ();
 
-        // Definimos variável para percorrer nosso métodos com as configurações obtidas no appsettings.json
+        // Definimos uma variável para percorrer nossos métodos com as configurações obtidas no appsettings.json
         private IConfiguration _config;
 
-        // Definimos método construtor para poder acessar essas configs 
-
+        // Definimos um método construtor para poder passar essas configs
         public LoginController (IConfiguration config) {
             _config = config;
         }
 
-        // Chamamos nosso método para validar o usuário na aplicação
-        private Usuario ValidaUsuario (Usuario login) {
-            var usuario = _context.Usuario.FirstOrDefault (
-                u => u.Email == login.Email &&
-                u.Senha == login.Senha
-            );
-
-            if (usuario != null) {
-                usuario = login;
-            }
+        // Chamamos nosso método para validar nosso usuário da aplicação
+        private Usuario AuthenticateUser (LoginViewModel login) {
+            var usuario = _context.Usuario.FirstOrDefault (u => u.Email == login.Email && u.Senha == login.Senha);
 
             return usuario;
         }
 
-        // Geramos o token
-        private string GerarToken (Usuario userInfo) {
-
-            // Definimos a criptografia do nosso Token
+        // Criamos nosso método que vai gerar nosso Token
+        private string GenerateJSONWebToken (Usuario userInfo) {
             var securityKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (_config["Jwt:Key"]));
-
             var credentials = new SigningCredentials (securityKey, SecurityAlgorithms.HmacSha256);
 
-            // Definimos nossas Claims (dados da sessão)
+            // Definimos nossas Claims (dados da sessão) para poderem ser capturadas
+            // a qualquer momento enquanto o Token for ativo
             var claims = new [] {
                 new Claim (JwtRegisteredClaimNames.NameId, userInfo.Nome),
                 new Claim (JwtRegisteredClaimNames.Email, userInfo.Email),
@@ -57,30 +47,29 @@ namespace Back_end.Controllers {
             };
 
             // Configuramos nosso Token e seu tempo de vida
-            var token = new JwtSecurityToken (
-                _config["Jwt : Issuer"],
-                _config["Jwt : Issuer"],
+            var token = new JwtSecurityToken (_config["Jwt:Issuer"],
+                _config["Jwt:Issuer"],
                 claims,
                 expires : DateTime.Now.AddMinutes (120),
-                signingCredentials : credentials
-            );
+                signingCredentials : credentials);
 
             return new JwtSecurityTokenHandler ().WriteToken (token);
         }
 
-        // Usamos essa anotação para ignorar a autenticação nesse método
+        // Usamos essa anotação para ignorar a autenticação neste método, já que é ele quem fará isso  
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login ([FromBody] Usuario login) {
-
+        public IActionResult Login ([FromBody] LoginViewModel login) {
             IActionResult response = Unauthorized ();
-            var user = ValidaUsuario (login);
+            var user = AuthenticateUser (login);
 
             if (user != null) {
-                var tokenString = GerarToken (user);
-                response = Ok (new { token  = tokenString });
+                var tokenString = GenerateJSONWebToken (user);
+                response = Ok (new { token = tokenString });
             }
+
             return response;
         }
+
     }
 }

@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Back_end.Models;
+using GUFOS_BackEnd.Domains;
+using GUFOS_BackEnd.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Back_end.Controllers {
-
-    // Definimos nossa rota do controller e dizemos que é um controller de API
+namespace GUFOS_BackEnd.Controllers {
     [Route ("api/[controller]")]
-
-    // Controle de API
     [ApiController]
     public class CategoriaController : ControllerBase {
+        
+        // GufosContext _context = new GufosContext();
 
-        GufosContext _contexto = new GufosContext ();
+        CategoriaRepository _repositorio = new CategoriaRepository ();
 
-        // GET: api/Categoria
+        // GET: api/Categoria/
         [HttpGet]
         public async Task<ActionResult<List<Categoria>>> Get () {
-
-            var categorias = await _contexto.Categoria.ToListAsync ();
+            var categorias = await _repositorio.Listar ();
 
             if (categorias == null) {
                 return NotFound ();
@@ -28,12 +26,10 @@ namespace Back_end.Controllers {
             return categorias;
         }
 
-        // GET: api/Categoria/2
+        // GET: api/Categoria/5
         [HttpGet ("{id}")]
         public async Task<ActionResult<Categoria>> Get (int id) {
-
-            // FindAsync = procura algo específico no banco
-            var categoria = await _contexto.Categoria.FindAsync (id);
+            var categoria = await _repositorio.BuscarPorID (id);
 
             if (categoria == null) {
                 return NotFound ();
@@ -42,39 +38,31 @@ namespace Back_end.Controllers {
             return categoria;
         }
 
-        // POST api/Categoria
+        // POST: api/Categoria/
         [HttpPost]
         public async Task<ActionResult<Categoria>> Post (Categoria categoria) {
-
             try {
-                // Tratamos contra ataques de SQL Injection
-                await _contexto.AddAsync (categoria);
-
-                // Salvamos efetivamente o nosso objeto no banco de dados
-                await _contexto.SaveChangesAsync ();
+                await _repositorio.Salvar(categoria);
             } catch (DbUpdateConcurrencyException) {
                 throw;
             }
+
             return categoria;
         }
 
+        // PUT: api/Categoria/5
         [HttpPut ("{id}")]
-        public async Task<ActionResult> Put (int id, Categoria categoria) {
-
-            // Se o Id do objeto não existir ele retorna 404
+        public async Task<IActionResult> Put (int id, Categoria categoria) {
             if (id != categoria.CategoriaId) {
                 return BadRequest ();
             }
 
-            // Comparamos os atributos que foram modificados através do EF(Entity Framework)
-            _contexto.Entry (categoria).State = EntityState.Modified;
-
             try {
-                await _contexto.SaveChangesAsync ();
+                
+                await _repositorio.Alterar (categoria);
+            
             } catch (DbUpdateConcurrencyException) {
-
-                // Verificamos se o obejto inserido realmente existe no banco
-                var categoria_valido = await _contexto.Categoria.FindAsync (id);
+                var categoria_valido = await _repositorio.BuscarPorID(id);
 
                 if (categoria_valido == null) {
                     return NotFound ();
@@ -83,24 +71,19 @@ namespace Back_end.Controllers {
                 }
             }
 
-            // NoContent = Retorna 204, sem nada
             return NoContent ();
         }
 
-        //DELETE api/categoria/id
+        // DELETE: api/Categoria/5
         [HttpDelete ("{id}")]
         public async Task<ActionResult<Categoria>> Delete (int id) {
-
-            var categoria = await _contexto.Categoria.FindAsync (id);
-
+            var categoria = await _repositorio.BuscarPorID(id);
             if (categoria == null) {
                 return NotFound ();
             }
 
-            _contexto.Categoria.Remove(categoria);
-            await _contexto.SaveChangesAsync();
-
             return categoria;
         }
+
     }
 }

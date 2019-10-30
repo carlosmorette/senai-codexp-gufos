@@ -6526,11 +6526,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fic\\Desktop\\Gufos\\Back-end\\Back-end.csproj",
-      "projectName": "Back-end",
-      "projectPath": "C:\\Users\\fic\\Desktop\\Gufos\\Back-end\\Back-end.csproj",
+      "projectUniqueName": "C:\\Users\\fic\\Desktop\\GUFOS_BackEnd\\GUFOS_BackEnd.csproj",
+      "projectName": "GUFOS_BackEnd",
+      "projectPath": "C:\\Users\\fic\\Desktop\\GUFOS_BackEnd\\GUFOS_BackEnd.csproj",
       "packagesPath": "C:\\Users\\fic\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fic\\Desktop\\Gufos\\Back-end\\obj\\",
+      "outputPath": "C:\\Users\\fic\\Desktop\\GUFOS_BackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
