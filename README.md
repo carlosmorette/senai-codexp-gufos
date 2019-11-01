@@ -1,11 +1,11 @@
-# GUFOS - Agenda de Eventos - BackEnd C# - .Net Core 3.0
+Ôªø# GUFOS - Agenda de Eventos - BackEnd C# - .Net Core 3.0
 
 ## Requisitos
 > - Visual Studio Code <br>
 > - Banco de Dados funcionando - DDLs, DMLs e DQLs <br>
 > - .NET Core SDK 3.0
 
-## CriaÁ„o do Projeto
+## Cria√ß√£o do Projeto
 > Criamos nosso projeto de API com: 
 ```bash
 dotnet new webapi
@@ -14,7 +14,7 @@ dotnet new webapi
 
 ## Entity Framework - Database First
 
-> Instalar o gerenciador de pacotes EF na m·quina:
+> Instalar o gerenciador de pacotes EF na m√°quina:
 ```bash
 dotnet tool install --global dotnet-ef
 ```
@@ -28,37 +28,40 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 
 <br>
 
-> Baixar pacote de escrita de cÛdigos do EF:
+> Baixar pacote de escrita de c√≥digos do EF:
 ```bash
 dotnet add package Microsoft.EntityFrameworkCore.Design
 ```
 
 <br>
 
-> Dar um restore na aplicaÁ„o para ler e aplicar os pacotes instalados:
+> Dar um restore na aplica√ß√£o para ler e aplicar os pacotes instalados:
 ```bash
 dotnet restore
 ```
 
 <br>
 
-> Testar se o EF est· ok
+> Testar se o EF est√° ok
 ```bash
 dotnet ef
 ```
 
 <br>
 
-> Criar os Models ‡ partir da sua base de Dados
-    :point_right: -o = criar o diretorio caso n„o exista
+> Criar os Models √† partir da sua base de Dados
+    :point_right: -o = criar o diretorio caso n√£o exista
     :point_right: -d = Incluir as DataNotations do banco
+
+#Lembrar de Tirar o Trusted_Connection=True
+
 ```bash
 dotnet ef dbcontext scaffold "Server=DESKTOP-XVGT587\SQLEXPRESS;Database=Gufos;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models -d
 ```
 <br>
 
 ## Controllers
-> Apagamos o controller que j· vem com a base...
+> Apagamos o controller que j√° vem com a base...
 
 ### CategoriaController
 
@@ -68,7 +71,7 @@ dotnet ef dbcontext scaffold "Server=DESKTOP-XVGT587\SQLEXPRESS;Database=Gufos;T
 ```c#
 [Route("api/[controller]")]
 ```
-> Logo abaixo dizemos que È um controller de API, utilizando:
+> Logo abaixo dizemos que √© um controller de API, utilizando:
 ```c#
 [ApiController]
 ```
@@ -91,7 +94,7 @@ GufosContext _contexto = new GufosContext();
 using GUFOS_BackEnd.Models;
 ```
 
-> Criamos nosso mÈtodo **GET**:
+> Criamos nosso m√©todo **GET**:
 ```c#
         // GET: api/Categoria/
         [HttpGet]
@@ -108,7 +111,7 @@ using GUFOS_BackEnd.Models;
         }
 ```
 
-> Importamos com CTRL + . as dependÍncias:
+> Importamos com CTRL + . as depend√™ncias:
 ```c#
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -116,7 +119,7 @@ using System.Collections.Generic;
 ```
 <br>
 
-> Testamos o mÈtodo GET de nosso controller no Postman:
+> Testamos o m√©todo GET de nosso controller no Postman:
 ```bash
 dotnet run
 https://localhost:5001/api/categoria
@@ -145,7 +148,7 @@ https://localhost:5001/api/categoria
 
 <br>
 
-> Criamos nossa sobrecarga de mÈtodo **GET**, desta vez passando como par‚metro o ID:
+> Criamos nossa sobrecarga de m√©todo **GET**, desta vez passando como par√¢metro o ID:
 ```c#
         // GET: api/Categoria/5
         [HttpGet("{id}")]
@@ -165,7 +168,7 @@ https://localhost:5001/api/categoria
 
 <br>
 
-> Criamos nosso mÈtodo **POST** para inserir uma nova categoria:
+> Criamos nosso m√©todo **POST** para inserir uma nova categoria:
 ```c#
         // POST: api/Categoria/
         [HttpPost]
@@ -193,7 +196,7 @@ https://localhost:5001/api/categoria
 
 <br>
 
-> Criamos nosso mÈtodo **PUT** para atualizar os dados:
+> Criamos nosso m√©todo **PUT** para atualizar os dados:
 ```c#
         // PUT: api/Categoria/5
         [HttpPut("{id}")]
@@ -227,17 +230,17 @@ https://localhost:5001/api/categoria
             return NoContent();
         }
 ```
-> Testamos no Postman, no mÈtodo PUT, pela URL [https://localhost:5001/api/categoria/4](https://localhost:5001/api/categoria/4) passando:
+> Testamos no Postman, no m√©todo PUT, pela URL [https://localhost:5001/api/categoria/4](https://localhost:5001/api/categoria/4) passando:
 ```json
 {
     "categoriaId": 4,
-    "titulo": "Design Gr·fico"
+    "titulo": "Design Gr√°fico"
 }
 ```
 
 <br>
 
-> Por ˙ltimo, incluÌmos nosso mÈtodo **DELETE** , para excluir uma determinada Categoria:
+> Por √∫ltimo, inclu√≠mos nosso m√©todo **DELETE** , para excluir uma determinada Categoria:
 ```c#
         // DELETE: api/Categoria/5
         [HttpDelete("{id}")]
@@ -255,12 +258,12 @@ https://localhost:5001/api/categoria
             return categoria;
         }
 ```
-> Testamos pelo Postman, pelo mÈrodo DELETE, e com a URL: [https://localhost:5001/api/categoria/4](https://localhost:5001/api/categoria/4) <br>
-> Deve-se retornar o objeto excluÌdo:
+> Testamos pelo Postman, pelo m√©rodo DELETE, e com a URL: [https://localhost:5001/api/categoria/4](https://localhost:5001/api/categoria/4) <br>
+> Deve-se retornar o objeto exclu√≠do:
 ```json
 {
     "categoriaId": 4,
-    "titulo": "Design Gr·fico",
+    "titulo": "Design Gr√°fico",
     "evento": []
 }
 ```
@@ -269,15 +272,15 @@ https://localhost:5001/api/categoria
 
 ### LocalizacaoController
 > Copiar ControllerCategoria e alterar com **CTRL + F** <br>
-> Testar os mÈtodos REST
+> Testar os m√©todos REST
 
 <br>
 
 ### EventoController
 > Copiar ControllerCategoria e alterar com **CTRL + F** <br>
-> Testar os mÈtodos REST <br>
-> Notamos que no mÈtodo **GET** n„o retorna a ·rvore de objetos *Categoria* e *Localizacao* <br>
-> Para incluirmos È necess·rio adicionar em nosso projeto o seguinte pacote:
+> Testar os m√©todos REST <br>
+> Notamos que no m√©todo **GET** n√£o retorna a √°rvore de objetos *Categoria* e *Localizacao* <br>
+> Para incluirmos √© necess√°rio adicionar em nosso projeto o seguinte pacote:
 ```bash
 dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
 ```
@@ -285,15 +288,15 @@ dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
 ```c#
 services.AddControllersWithViews().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 ```
-> Damos **CTRL + .** para incluir a dependÍncia:
+> Damos **CTRL + .** para incluir a depend√™ncia:
 ```c#
 using Newtonsoft.Json;
 ```
-> ApÛs isso precisamos mudar nosso controller para receber os atributos, no mÈtodo GET ficar· assim:
+> Ap√≥s isso precisamos mudar nosso controller para receber os atributos, no m√©todo GET ficar√° assim:
 ```c#
 var eventos = await _context.Evento.Include(c => c.Categoria).Include(l => l.Localizacao).ToListAsync();
 ```
-> No mÈtodo GET com par‚metro ficar· assim:
+> No m√©todo GET com par√¢metro ficar√° assim:
 ```c#
 var evento = await _context.Evento.Include(c => c.Categoria).Include(l => l.Localizacao).FirstOrDefaultAsync(e => e.EventoId == id);
 ```
@@ -304,7 +307,7 @@ var evento = await _context.Evento.Include(c => c.Categoria).Include(l => l.Loca
 
 <br><br>
 
-## SWAGGER - DocumentaÁ„o da API
+## SWAGGER - Documenta√ß√£o da API
 
 >  Instalar o Swagger:
 ```bash
@@ -317,7 +320,7 @@ dotnet add Gufos_BackEnd.csproj package Swashbuckle.AspNetCore -v 5.0.0-rc4
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-                // Mostrar o caminho dos coment·rios dos mÈtodos Swagger JSON and UI.
+                // Mostrar o caminho dos coment√°rios dos m√©todos Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -335,7 +338,7 @@ using System.IO;
 
 <br>
 
-> Colocar dentro do csproj para gerar a documentaÁ„o com base nos coment·rios dos mÈtodos:
+> Colocar dentro do csproj para gerar a documenta√ß√£o com base nos coment√°rios dos m√©todos:
 ```c#
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -345,11 +348,11 @@ using System.IO;
 
 <br>
 
-> Em Startup.cs , no mÈtodo Configure, habilite o middleware para atender ao documento JSON gerado e ‡ interface do usu·rio do Swagger:
+> Em Startup.cs , no m√©todo Configure, habilite o middleware para atender ao documento JSON gerado e √† interface do usu√°rio do Swagger:
 ```c#
-            // Habilitamos efetivamente o Swagger em nossa aplicaÁ„o.
+            // Habilitamos efetivamente o Swagger em nossa aplica√ß√£o.
             app.UseSwagger();
-            // Especificamos o endpoint da documentaÁ„o
+            // Especificamos o endpoint da documenta√ß√£o
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
@@ -358,11 +361,11 @@ using System.IO;
 
 <br>
 
-> Rodar a aplicaÁ„o e testar em: [https://localhost:5001/swagger/](https://localhost:5001/swagger/)
+> Rodar a aplica√ß√£o e testar em: [https://localhost:5001/swagger/](https://localhost:5001/swagger/)
 
 <br>
 
-## JWT - AutenticaÁ„o com Json Web Token
+## JWT - Autentica√ß√£o com Json Web Token
 
 > Instalar pacote JWT
 ```bash
@@ -370,7 +373,7 @@ dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 3.0.0
 ```
 <br>
 
-> Adicionar a configuraÁ„o do nosso ServiÁo de autenticaÁ„o:
+> Adicionar a configura√ß√£o do nosso Servi√ßo de autentica√ß√£o:
 ```c#
             // JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)  
@@ -389,7 +392,7 @@ dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 3.0.0
             });
 ```
 
-> Importar com **CTRL + .** as dependÍncias:
+> Importar com **CTRL + .** as depend√™ncias:
 ```c#
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -410,7 +413,7 @@ using System.Text;
 
 <br>
 
-> Em Startup.cs , no mÈtodo Configure , usamos efetivamente a autenticaÁ„o:
+> Em Startup.cs , no m√©todo Configure , usamos efetivamente a autentica√ß√£o:
 ```c#
 app.UseAuthentication();
 ``` 
@@ -418,7 +421,7 @@ app.UseAuthentication();
 <br><br>
 
 > Criamos o Controller *LoginController* e herdamos da *ControllerBase* <br>
-> Colocamos a rota da API e dizemos que È um controller de API :
+> Colocamos a rota da API e dizemos que √© um controller de API :
 ```c#
     [Route("api/[controller]")]  
     [ApiController] 
@@ -429,21 +432,21 @@ app.UseAuthentication();
 ```
 <br>
 
-> Criamos nossos mÈtodos:
+> Criamos nossos m√©todos:
 ```c#
         // Chamamos nosso contexto do banco
         GufosContext _context = new GufosContext();
 
-        // Definimos uma vari·vel para percorrer nossos mÈtodos com as configuraÁıes obtidas no appsettings.json
+        // Definimos uma vari√°vel para percorrer nossos m√©todos com as configura√ß√µes obtidas no appsettings.json
         private IConfiguration _config;  
 
-        // Definimos um mÈtodo construtor para poder passar essas configs
+        // Definimos um m√©todo construtor para poder passar essas configs
         public LoginController(IConfiguration config)  
         {  
             _config = config;  
         }
 
-        // Chamamos nosso mÈtodo para validar nosso usu·rio da aplicaÁ„o
+        // Chamamos nosso m√©todo para validar nosso usu√°rio da aplica√ß√£o
         private Usuario AuthenticateUser(Usuario login)  
         {  
             var usuario =  _context.Usuario.FirstOrDefault(u => u.Email == login.Email && u.Senha == login.Senha);
@@ -456,13 +459,13 @@ app.UseAuthentication();
             return usuario;  
         }  
 
-        // Criamos nosso mÈtodo que vai gerar nosso Token
+        // Criamos nosso m√©todo que vai gerar nosso Token
         private string GenerateJSONWebToken(Usuario userInfo)  
         {  
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));  
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            // Definimos nossas Claims (dados da sess„o) para poderem ser capturadas
+            // Definimos nossas Claims (dados da sess√£o) para poderem ser capturadas
             // a qualquer momento enquanto o Token for ativo
             var claims = new[] {  
                 new Claim(JwtRegisteredClaimNames.NameId, userInfo.Nome),  
@@ -482,7 +485,7 @@ app.UseAuthentication();
   
 
         
-        // Usamos essa anotaÁ„o para ignorar a autenticaÁ„o neste mÈtodo, j· que È ele quem far· isso  
+        // Usamos essa anota√ß√£o para ignorar a autentica√ß√£o neste m√©todo, j√° que √© ele quem far√° isso  
         [AllowAnonymous]  
         [HttpPost]  
         public IActionResult Login([FromBody]Usuario login)  
@@ -500,7 +503,7 @@ app.UseAuthentication();
         }
 ```
 
-> Importamos as dependÍncias:
+> Importamos as depend√™ncias:
 ```c#
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -514,9 +517,9 @@ using Microsoft.IdentityModel.Tokens;
 ```
 <br>
 
-> Testamos se est· sendo gerado nosso Token pelo Postman, no mÈtodo POST <br>
+> Testamos se est√° sendo gerado nosso Token pelo Postman, no m√©todo POST <br>
 > Pela URL : [https://localhost:5001/api/login](https://localhost:5001/api/login) <br>
-> E com os seguintes par‚metros pela RAW : 
+> E com os seguintes par√¢metros pela RAW : 
 ```json
 {
     "nome": "Administrador",
@@ -532,8 +535,8 @@ using Microsoft.IdentityModel.Tokens;
 }
 ```
 
-> ApÛs confirmar, vamos atÈ [https://jwt.io/](https://jwt.io/) <br>
-> Colamos nosso Token l· e em Payload devemos ter os seguintes dados:
+> Ap√≥s confirmar, vamos at√© [https://jwt.io/](https://jwt.io/) <br>
+> Colamos nosso Token l√° e em Payload devemos ter os seguintes dados:
 ```json
 {
   "nameid": "Administrador",
@@ -547,8 +550,228 @@ using Microsoft.IdentityModel.Tokens;
 
 <br><br>
 
-> Pronto! Agora È sÛ utilizar a anotaÁ„o *[Authorize]* em baixo da anotaÁ„o REST de cada mÈtodo que desejar colocar autenticaÁ„o! <br>
-> No Postman devemos gerar um token pela rota de login e nos demais endpoints devemos adicionar o token gerado na aba *Authorization*  escolhendo a opÁ„o ***Baerer Token***
+> Pronto! Agora √© s√≥ utilizar a anota√ß√£o *[Authorize]* em baixo da anota√ß√£o REST de cada m√©todo que desejar colocar autentica√ß√£o! <br>
+> No Postman devemos gerar um token pela rota de login e nos demais endpoints devemos adicionar o token gerado na aba *Authorization*  escolhendo a op√ß√£o ***Baerer Token***
+
+
+<br><br>
+
+# Reestruturando projeto para os padr√µes de mercado
+## Incluindo Domains, Repositories, Interfaces
+
+> Apagamos a pasta Models e fazemos o scaffold novamente, com a nomenclatura Domains no lugar de Models
+
+> Antes disso recortamos nossos Controllers para outro diret√≥rio para n√£o dar erro de Build
+
+```bash
+dotnet ef dbcontext scaffold "Server=DESKTOP-XVGT587\SQLEXPRESS;Database=Gufos;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Domains -d
+```
+
+> Depois de gerados os dom√≠nios(models) recolocamos os controllers dentro do projeto
+
+> Substitu√≠mos todos os "Usings" de nossos Controllers que est√£o como "Models" para "Domains"
+
+<br>
+
+### Interfaces
+> Criamos nosso diret√≥rio "Interfaces"
+> Dentro deste diret√≥rio criamos nossa primeira interface: "ICategoria.cs"
+<br>
+
+> Dentro de ICategoria criamos nossos "Contratos"(m√©todos que ser√£o obrigat√≥rios):
+```c#
+        Task<List<Categoria>> Listar();
+
+        Task<Categoria> BuscarPorID(int id);
+
+        Task<Categoria> Salvar(Categoria categoria);
+
+        Task<Categoria> Alterar(Categoria categoria);
+
+        Task<Categoria> Excluir(Categoria categoria);
+```
+
+<br>
+
+> Criamos nosso diret√≥rio "Repositories"
+> Dentro deste diret√≥rio criamos nosso primeiro reposit√≥rio: "CategoriaRepository.cs"
+> Herdamos esta classe de "Icategoria":
+
+```c#
+using GUFOS_BackEnd.Interfaces;
+
+namespace GUFOS_BackEnd.Repositories
+{
+    public class CategoriaRepository : ICategoria
+    {
+        
+    }
+}
+```
+
+<br>
+
+> Damos **CTRL + .** para implementar a interface em nosso reposit√≥rio, e colocando "async" nos m√©todos, ficando assim:
+```c#
+        public async Task<IActionResult> Alterar(long id, Categoria categoria)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<ActionResult<Categoria>> BuscarPorID()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<ActionResult<Categoria>> Excluir(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<ActionResult<List<Categoria>>> Listar()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<ActionResult<Categoria>> Salvar(Categoria categoria)
+        {
+            throw new System.NotImplementedException();
+        }
+```
+<br>
+
+> Dentro do m√©todo Listar() colocamos nosso contexto utilizando using (que ser√° respons√°vel por abrir e fechar a conex√£o com o banco):
+```c#
+    using(GufosContext _context = new GufosContext()){
+        
+    }
+```
+
+> Dentro do Using, j√° retornamos nossa "query" :
+```c#
+    using(GufosContext _context = new GufosContext()){
+        return await _context.Categoria.ToListAsync();
+    }
+```
+
+> Tiramos a inst√¢ncia do nosso Context do Controller e substitu√≠mos pela nossa "CategoriaRepository":
+```c#
+//GufosContext _context = new GufosContext();
+CategoriaRepository repositorio = new CategoriaRepository();
+```
+> Importamos nosso diret√≥rio de reposit√≥rios:
+```c#
+using GUFOS_BackEnd.Repositories;
+```
+<br><br>
+
+> Deixamos nossas interfaces e respositorios sem o AcionResult:
+### CategoriaRepository:
+```c#
+        public async Task<Categoria> Alterar(Categoria categoria)
+        {
+            using(GufosContext _context = new GufosContext()){
+                _context.Entry(categoria).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            return categoria;
+        }
+
+        public async Task<Categoria> BuscarPorID(int id)
+        {
+            using(GufosContext _context = new GufosContext()){
+                return await _context.Categoria.FindAsync(id);
+            }
+        }
+
+        public async Task<Categoria> Excluir(Categoria categoria)
+        {
+            using(GufosContext _context = new GufosContext()){
+                _context.Categoria.Remove(categoria);
+                await _context.SaveChangesAsync();
+                return categoria;                
+            }
+        }
+
+        public async Task<List<Categoria>> Listar()
+        {
+            using(GufosContext _context = new GufosContext()){
+                return await _context.Categoria.ToListAsync();
+            }
+        }
+
+        public async Task<Categoria> Salvar(Categoria categoria)
+        {
+            using(GufosContext _context = new GufosContext()){
+                await _context.AddAsync(categoria);
+                await _context.SaveChangesAsync();
+                return categoria;
+            }
+        }
+    }
+```
+
+### ICategoria:
+```c#
+    Task<List<Categoria>> Listar();
+
+    Task<Categoria> BuscarPorID(int id);
+
+    Task<Categoria> Salvar(Categoria categoria);
+
+    Task<Categoria> Alterar(Categoria categoria);
+
+    Task<Categoria> Excluir(Categoria categoria);
+```
+<br><br>
+
+## ViewModel
+> Criamos um diretorio chamado ***ViewModel*** 
+> Dentro dele criamos nossa classe ***LoginViewModel***
+> Dentro da classe colocamos somente os atributos que ser√£o necess√°rios para fazer o login e suas devidas DataAnotations:
+```c#
+        // Data Annotations
+        [Required]
+        public string Email { get; set; }
+        // definimos o tamanho do campo
+        [StringLength(255, MinimumLength = 5)]
+        public string Senha { get; set; }
+```
+
+<br>
+
+> Dentro de Login Controller deixamos de receber as informa√ß√µes do objeto Usuario(que precisa passar os dados que est√£o como obrigat√≥rios) e passamos a receber de nosso LoginViewModel:
+
+```c#
+
+        // Chamamos nosso m√©todo para validar nosso usu√°rio da aplica√ß√£o
+        private Usuario AuthenticateUser(LoginViewModel login)  
+        {  
+            var usuario =  _context.Usuario.FirstOrDefault(u => u.Email == login.Email && u.Senha == login.Senha);
+            return usuario;  
+        }  
+
+
+
+        // Usamos essa anota√ß√£o para ignorar a autentica√ß√£o neste m√©todo, j√° que √© ele quem far√° isso  
+        [AllowAnonymous]  
+        [HttpPost]  
+        public IActionResult Login([FromBody]LoginViewModel login)  
+        {  
+            IActionResult response = Unauthorized();  
+            var user = AuthenticateUser(login);  
+  
+            if (user != null)  
+            {  
+                var tokenString = GenerateJSONWebToken(user);  
+                response = Ok(new { token = tokenString });  
+            }  
+  
+            return response;  
+        }
+
+
+```
 
 
 
