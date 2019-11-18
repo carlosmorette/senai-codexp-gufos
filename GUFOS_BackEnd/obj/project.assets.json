@@ -6520,28 +6520,33 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\paulo.brandao\\.nuget\\packages\\": {},
+    "C:\\Users\\fic\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paulo.brandao\\Desktop\\GUFOS_BackEnd\\GUFOS_BackEnd.csproj",
+      "projectUniqueName": "C:\\Users\\fic\\Desktop\\Gufos\\Gufos_BackEnd\\GUFOS_BackEnd.csproj",
       "projectName": "GUFOS_BackEnd",
-      "projectPath": "C:\\Users\\paulo.brandao\\Desktop\\GUFOS_BackEnd\\GUFOS_BackEnd.csproj",
-      "packagesPath": "C:\\Users\\paulo.brandao\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\paulo.brandao\\Desktop\\GUFOS_BackEnd\\obj\\",
+      "projectPath": "C:\\Users\\fic\\Desktop\\Gufos\\Gufos_BackEnd\\GUFOS_BackEnd.csproj",
+      "packagesPath": "C:\\Users\\fic\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\fic\\Desktop\\Gufos\\Gufos_BackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\paulo.brandao\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\fic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
