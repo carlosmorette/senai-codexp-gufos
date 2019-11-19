@@ -9,6 +9,7 @@ import { classBody } from '@babel/types';
 class Categorias extends Component {
 
     //#region Método Construtor
+    
     // Usado para criar nossos states
     constructor() {
         // Usado para poder manipular os states, que são herdados de Component
