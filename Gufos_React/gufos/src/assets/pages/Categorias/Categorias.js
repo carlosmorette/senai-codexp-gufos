@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import Footer from '../../Componentes/Footer/Footer';
+import Header from '../../Componentes/Header/Header';
+
+
+// Import dos métodos Http
 import { METHODS } from 'http';
 
 // Import da biblioteca Material Design BootStrap 
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
 import { classBody } from '@babel/types';
+import Cabecalho from '../../Componentes/Header/Header';
 
 class Categorias extends Component {
 
@@ -28,7 +33,12 @@ class Categorias extends Component {
             editarModal: {
                 categoriaId: "",
                 titulo: ""
-            }
+            },
+
+            // Criando um estado para verificar carregamento
+            loading: false,
+
+            erroMsg: ""
         }
 
 
@@ -69,9 +79,20 @@ class Categorias extends Component {
     //#region GET
     // GET - Listar
     listaAtualizada = () => {
+
+        // Habilita o ícone de carregando
+        this.setState({ loading: true })
+
         fetch("http://localhost:5000/api/categoria")
             .then(response => response.json())
             .then(data => this.setState({ lista: data }))
+
+        // Desabilita o ícone de carregando após 2 segundos
+        setTimeout(() => {
+            this.setState({ loading: false })
+        }, 2000);
+
+
     }
     //#endregion
 
@@ -132,6 +153,8 @@ class Categorias extends Component {
 
         console.log(id);
 
+        this.setState({ erroMsg: "" })
+
         fetch("http://localhost:5000/api/categoria/" + id, {
             method: "DELETE",
             headers: {
@@ -143,10 +166,14 @@ class Categorias extends Component {
                 console.log(response);
                 this.listaAtualizada();
                 this.setState(() => ({ lista: this.state.lista }))
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                console.log(error);
+                this.setState({ erroMsg: "Não é possível excluir esta categoria, verifique se não há eventos que a utilizem" })
+            })
     }
     //#endregion
 
+    //#region Captura e Salva
     // Acionado quando clicamos no botão editar para capturar e salvar no State os dados atuais
     alterarCategoria = (categoria) => {
         console.log(categoria)
@@ -163,11 +190,14 @@ class Categorias extends Component {
         // Abrir modal
         this.toggle();
     }
+    //#endregion
 
+    //#region AlteraInput
     // Utilizamos para poder alterar o input de Cadastro
     atualizaNome(input) {
         this.setState({ nome: input.target.value })
     }
+    //#endregion
 
     //#region Atualiza State
     // Utilizamos para atualizar os states dos inputs
@@ -183,7 +213,8 @@ class Categorias extends Component {
 
     render() {
         return (
-            <div>
+            <div class="Categorias">
+                <Header/>
                 {/* <Link to='/'>Voltar </Link> */}
                 <main className="conteudoPrincipal">
                     <section className="conteudoPrincipal-cadastro">
@@ -219,6 +250,13 @@ class Categorias extends Component {
                                     }
                                 </tbody>
                             </table>
+
+                            {/* Verifica e caso haja uma mensagem de erro ele mostra abaixo da tabela */}
+                            {this.state.erroMsg && <div className="text-danger">{this.state.erroMsg}</div>}
+
+                            {/* Colocamos o ícone de carregando sintaxe: nome do icone 'fas fa-spinner' logo após as propriedades desejadas */}
+                            {this.state.loading && <i className="fas fa-spinner fa-spin fa-2x blue-text"></i>}
+
                         </div>
 
                         <div className="container" id="conteudoPrincipal-cadastro">

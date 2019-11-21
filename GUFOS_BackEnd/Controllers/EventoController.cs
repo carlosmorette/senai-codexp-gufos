@@ -13,7 +13,7 @@ namespace backend.Controllers {
     // Define a rota do controller, e diz que é um controller de API
     [Route ("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [A   uthorize]
     public class EventoController : ControllerBase {
 
         EventoRepository _repositorio = new EventoRepository ();

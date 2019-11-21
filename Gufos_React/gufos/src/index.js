@@ -22,6 +22,8 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './assets/css/flexbox.css';
 import './assets/css/reset.css';
 import './assets/css/style.css';
+import './assets/css/cabecalho.css';
+import './assets/css/rodape.css';
 
 // Imports pedidos
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -37,10 +39,10 @@ const Rotas = (
                 <Route exact path="/" component={App} />
                 <Route path="/Categoria" component={() => <Categorias titulo_pagina="Categorias - Gufos"/>} />
                 <Route path="/Categorias" component={() => <Categorias titulo_pagina="Categorias - Gufos"/>} />
-                <Route path="/Login" component={Login}/>
-                <Route path="/Logins" component={Login}/>
-                <Route path="/Evento" component={Eventos}/>
-                <Route path="/Eventos" component={Eventos}/>
+                <Route path="/Login" component={() => <Login titulo_pagina="Login - Gufos"/>}/>
+                <Route path="/Logins" component={() => <Login titulo_pagina="Login - Gufos"/>}/>
+                <Route path="/Evento" component={() => <Eventos titulo_pagina="Eventos - Gufos"/>}/>
+                <Route path="/Eventos" component={() => <Eventos titulo_pagina="Eventos- Gufos"/>}/>
                 <Route component={NotFound} />
             </Switch>   
         </div>
