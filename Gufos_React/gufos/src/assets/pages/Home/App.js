@@ -1,9 +1,11 @@
 import React from 'react';
 import Footer from '../../Componentes/Footer/Footer.js';
+import Header from '../../Componentes/Header/Header';
 
 function App() {
   return (
     <div className="App">
+      <Header/>
       <section className="conteudoImagem">
         <div>
           <h1>Gufos</h1>

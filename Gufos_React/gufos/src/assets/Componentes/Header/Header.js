@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import Logo from '../../img/icon-login.png';
-
+import {Link} from 'react-router-dom';
 
 export default class Header extends Component {
     render() {
         return (
-            <header class="cabecalhoPrincipal">
-                <div class="container">
+            <header className="cabecalhoPrincipal">
+                <div className="container">
                     <img src={Logo} />
-                    <nav class="cabecalhoPrincipal-nav">
-                        <a>Home</a>
-                        <a>Eventos</a>
-                        <a>Contato</a>
-                        <a class="cabecalhoPrincipal-nav-login" href="login.html">Login</a>
+                    <nav className="cabecalhoPrincipal-nav">
+                        <Link to='/'>Home</Link>
+                        <Link to='/Evento'>Eventos</Link>
+                        <Link to='/'>Contato</Link>
+                        <Link to='/Login' className="cabecalhoPrincipal-nav-login">Login</Link>
                     </nav>
                 </div>
             </header>

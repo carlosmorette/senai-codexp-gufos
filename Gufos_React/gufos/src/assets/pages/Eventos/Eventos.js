@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Footer from '../../Componentes/Footer/Footer';
 import { METHODS } from 'http';
 import Categorias from '../Categorias/Categorias';
+import Header from '../../Componentes/Header/Header';
 
 
 class Eventos extends Component {
@@ -101,7 +102,8 @@ class Eventos extends Component {
 
   render() {
     return (
-      <div>
+      <div class="Eventos">
+        <Header/>
         <main className="conteudoPrincipal">
           <section className="conteudoPrincipal-cadastro">
             <h1 className="conteudoPrincipal-cadastro-titulo">Eventos</h1>

@@ -24,6 +24,7 @@ import './assets/css/reset.css';
 import './assets/css/style.css';
 import './assets/css/cabecalho.css';
 import './assets/css/rodape.css';
+import './assets/css/login.css';
 
 // Imports pedidos
 import '@fortawesome/fontawesome-free/css/all.min.css';
