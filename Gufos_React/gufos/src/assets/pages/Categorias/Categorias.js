@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Footer from '../../Componentes/Footer/Footer';
 import Header from '../../Componentes/Header/Header';
 
-
 // Import dos métodos Http
 import { METHODS } from 'http';
 

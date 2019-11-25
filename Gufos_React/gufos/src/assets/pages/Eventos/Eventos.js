@@ -3,6 +3,8 @@ import Footer from '../../Componentes/Footer/Footer';
 import { METHODS } from 'http';
 import Categorias from '../Categorias/Categorias';
 import Header from '../../Componentes/Header/Header';
+import api from '../../../services/api';
+import Axios from 'axios';
 
 
 class Eventos extends Component {
@@ -17,18 +19,12 @@ class Eventos extends Component {
       // Criamos esse objeto porque ele será responsável por listar
       listaCategoria: [],
 
-      titulo: '',
-      dataEvento: "",
-      acessoLivre: "",
-      categoria: "",
+      titulo: "",
+      data: new Date(),
+      acesso: 0,
+      tipodoevento: "",
+      categoriaId: 0
 
-      editarModal: {
-        eventoId: "",
-        titulo: "",
-        dataEvento: "",
-        acessoLivre: "",
-        categoria: ""
-      },
     }
   }
   //#endregion
@@ -41,7 +37,6 @@ class Eventos extends Component {
     document.title = this.props.titulo_pagina;
     console.clear("CARREGANDO");
   }
-
 
   componentDidMount() {
     console.log('CARREGADO');
@@ -66,25 +61,12 @@ class Eventos extends Component {
   listarEvento = () => {
 
     fetch('http://localhost:5000/api/evento')
-
       // Trazendo para JSON
       .then(response => response.json())
 
       // Alterando o estado da lista
       .then(data => this.setState({ lista: data }))
   }
-
-  //#endregion
-
-  //#region POST
-  //POSTAR
-  cadastrarEvento(event){
-    event.preventDefault();
-
-    console.log('Cadastrando');
-
-  }
-
   //#endregion
 
   //#region Listar Categorias no Option
@@ -100,10 +82,44 @@ class Eventos extends Component {
   }
   //#endregion
 
+  //#region POST
+  //POSTAR
+  cadastrarEvento(event) {
+    event.preventDefault();
+
+    let evento = {
+      titulo: this.state.titulo,
+      data: new Date(this.state.data),
+      acesso: parseInt(this.state.acesso),
+      categoriaId: this.state.categoriaId
+    };
+
+    Axios.post('http://localhost:5000/api/eventos', evento)
+      .then(data => {
+        if (data.status === 200) {
+          console.log('Evento Cadastrado!');
+          this.setState({ isLoading: false });
+        };
+      })
+      .catch(erro => {
+        console.log(erro);
+        this.setState({ isLoading: false });
+      })
+      .then(this.listarEvento.bind(this));
+
+  };
+
+
+  atualizaStateCampo(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  //#endregion
+
   render() {
     return (
       <div class="Eventos">
-        <Header/>
+        <Header />
         <main className="conteudoPrincipal">
           <section className="conteudoPrincipal-cadastro">
             <h1 className="conteudoPrincipal-cadastro-titulo">Eventos</h1>
@@ -131,7 +147,7 @@ class Eventos extends Component {
                             <td>{evento.eventoId}</td>
                             <td>{evento.titulo}</td>
                             <td>{evento.dataEvento}</td>
-                            <td>{evento.acessoLivre}</td>
+                            <td>{evento.acessoLivre ? 'Livre' : 'Restrito'}</td>
                             <td>{evento.categoria.titulo}</td>
                             <td>
                               <button onClick={e => this.alteraEvento(evento)}>Alterar</button>
@@ -147,22 +163,32 @@ class Eventos extends Component {
 
             <div className="container" id="conteudoPrincipal-cadastro">
               <h2 className="conteudoPrincipal-cadastro-titulo">Cadastrar Evento</h2>
-              <form>
+              <form onSubmit={this.cadastrarEvento.bind(this)}>
                 <div className="container">
-                  <input type="text" id="evento__titulo" placeholder="título do evento"/>
-                  <input type="text" id="evento__data" placeholder="dd/MM/yyyy" />
-                  <select id="option__acessolivre">
+                  <input
+                    type="text"
+                    id="evento__titulo"
+                    placeholder="título do evento"
+                    onChange={this.atualizaStateCampo.bind(this)}
+                  />
+                  <input
+                    type="date"
+                    id="evento__data"
+                    placeholder="dd/MM/yyyy"
+                    onChange={this.atualizaStateCampo.bind(this)}
+                  />
+                  <select id="option__acessolivre"
+                    value={this.state.value}
+                    onChange={this.atualizaStateCampo.bind(this)}>
                     <option value="1">Livre</option>
                     <option value="0">Restrito</option>
                   </select>
 
-                  <select id="option__tipoevento">
+                  <select id="option__tipoevento"
+                    value={this.state.value}
+                    onChange={this.atualizaStateCampo.bind(this)}>
                     <option value="0">Tipo do Evento</option>
-                    {/* Aqui percorremos a lista de Categorias, mapeamos para conseguir mostra-la*/}
                     {
-                      /* 
-                        Aqui chamamos o objeto listaCategoria, lembrando que ele será responsável por listar
-                      */
                       this.state.listaCategoria.map(
                         /*
                           Criamos a função que recebe como parametro categoria
@@ -182,13 +208,15 @@ class Eventos extends Component {
                     id="evento__descricao"
                   ></textarea>
                 </div>
+                <center>
+                  <button
+                    type="submit"
+                    className="conteudoPrincipal-btn conteudoPrincipal-btn-cadastro">
+                    Cadastrar
+                    </button>
+                </center>
               </form>
-              <button
-                className="conteudoPrincipal-btn conteudoPrincipal-btn-cadastro"
-                onclick="cadastrarEvento()"
-              >
-                Cadastrar
-          </button>
+
             </div>
           </section>
         </main>
